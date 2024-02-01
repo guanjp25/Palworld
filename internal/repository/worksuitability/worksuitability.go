@@ -35,3 +35,43 @@ func (ws *workSuitabilityRepo) GetWorkSuitabilityList() []model.WorkSuitability 
 
 	return nil
 }
+
+func (ws *workSuitabilityRepo) UpdateWorkSuitability(workID string, name string) model.WorkSuitability {
+
+	for i := 0; i < len(ws.ws); i++ {
+		if workID == ws.ws[i].ID {
+			ws.ws[i].Name = name
+			return ws.ws[i]
+		}
+	}
+
+	return model.WorkSuitability{
+		ID:   "",
+		Name: "",
+		Type: "",
+	}
+}
+
+func (ws *workSuitabilityRepo) DeleteWorkSuitability(workID string) model.WorkSuitability {
+	for i := 0; i < len(ws.ws); i++ {
+		if workID == ws.ws[i].ID {
+			data := ws.ws[i]
+			ws.ws = append(ws.ws[:i], ws.ws[i+1:]...)
+			return data
+		}
+	}
+	return model.WorkSuitability{
+		ID:   "",
+		Name: "",
+		Type: "",
+	}
+}
+
+func (ws *workSuitabilityRepo) CreateWorkSuitability(works *model.WorkSuitability) []model.WorkSuitability {
+	if works.ID != "" {
+		ws.ws = append(ws.ws, *works)
+		return ws.ws
+	}
+
+	return ws.ws
+}
